@@ -24,15 +24,20 @@ In eukaryotic organisms, genomes are packed and organised into nuclelosomes whic
 
 With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treated with a hyperactive derivative of the Tn5 transposase. A transposase can bind to a transposable element, which is a DNA sequence that can change its position (jump) within a genome. During ATAC-Seq, the modified Tn5 inserts DNA sequences corresponding to truncated Nextera adapters into open regions of the genome and concurrently, the DNA is sheared by the transposase activity. The read library is then prepared for sequencing, including PCR amplification with full Nextera adapters and purification steps. Paired-end reads are recommended for ATAC-Seq for the reasons described here.
 
+
+
 # Pipelines for ATAC-seq
 
 > Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
 
 ## Alignment of ATAC-seq
 
+The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa.
 
 ## Post-alignment Filtering
 
+As ATAC-seq is a very noisy technology, we will need to be able to include sufficient quality datasets
+MT reeads
 
 ## Accessible Peak calling
 
