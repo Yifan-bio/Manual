@@ -1,8 +1,8 @@
 # ATAC-seq manual
 
 * [Introduction to ATAC-seq](#introduction-to-atac-seq)
-* [Background for ATAC-seq](#background-for-atac-seq)
-* [Principle behind ATAC-seq](#principle-behind-atac-seq)
+    + [Background](#background-for-atac-seq)
+    + [Principle behind ATAC-seq](#principle-behind-atac-seq)
 * [Pipelines for ATAC-seq](#pipelines-for-atac-seq)
     + [Alignment of ATAC-seq](#alignment-of-atac-seq)
     + [Post-alignment Filtering](#post-alignment-filtering)
@@ -12,7 +12,7 @@
 * [Reference](#reference)
 
 
-## Introduction to ATAC-seq
+# Introduction to ATAC-seq
 
 Assay for Transposase-Accessible Chromatin using sequencing (ATAC-Seq) is a method to investigate the accessibility of chromatin stucture using Tn5 transposase. Accessible chromatin are highly coupled with regulatory mechanisms of gene expression thus this method can contribute to the identification of regulatory elements such as promoter, enhancer and silencer regions. There is several different techniques developed for the same purpose of ATAC-seq but ATAC-seq shows to be a best option as it easier, faster and require less cells then other techniques. In the same time, ATAC-seq are able to provide short accessible region which is limited in other techniques. 
 
