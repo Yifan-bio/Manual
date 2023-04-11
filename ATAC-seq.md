@@ -1,14 +1,15 @@
+# ATAC-seq manual
 
 * [Introduction to ATAC-seq](#introduction-to-atac-seq)
 * [Background for ATAC-seq](#background-for-atac-seq)
 * [Principle behind ATAC-seq](#principle-behind-atac-seq)
 * [Pipelines for ATAC-seq](#pipelines-for-atac-seq)
-* 
-* [Background for ATAC-seq](#background-for-atac-seq)
+    + [Alignment of ATAC-seq](#alignment-of-atac-seq)
+    + [Post-alignment Filtering](#post-alignment-filtering)
+    + [Accessible Peak calling](#accessible-peak-calling)
+    + [Differential accessibility](#differential-accessibility)
+    + [Footprint analysis](#footprint-analysis)
 * [Reference](#reference)
-
-# ATAC-seq manual
-
 
 
 ## Introduction to ATAC-seq
@@ -25,10 +26,21 @@ With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treate
 
 # Pipelines for ATAC-seq
 
-Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
+> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
 
 ## Alignment of ATAC-seq
 
+
+## Post-alignment Filtering
+
+
+## Accessible Peak calling
+
+
+## Differential accessibility
+
+
+## Footprint analysis
 
 
 # Reference
