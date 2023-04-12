@@ -32,12 +32,11 @@
 
 ## Alignment
 
-The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa.
+
 
 ## Post-alignment Filtering
 
-As ATAC-seq is a very noisy technology, we will need to be able to include sufficient quality datasets
-MT reeads
+
 
 ## DNA methylation calling
 
