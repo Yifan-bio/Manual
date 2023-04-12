@@ -5,6 +5,7 @@
     + [Principle](#principle)
     + [Experimental Design](#experimental-design)
 * [Pipelines for ATAC-seq](#pipelines-for-atac-seq)
+    + [Quality Control](#quality-control)
     + [Trimming](#trimming)
     + [Alignment](#alignment)
     + [Post-alignment Filtering](#post-alignment-filtering)
@@ -64,6 +65,11 @@ It is a well-known problem that ATAC-seq datasets usually contain a large percen
 # Pipelines for ATAC-seq
 
 Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
+
+## Quality Control
+
+> Section update: Day Month Year
+
 
 ## Trimming
 
