@@ -70,10 +70,18 @@ Currectly there is many different pipelines for ATAC-seq but are limited with nu
 
 > Section update: Day Month Year
 
+### Fastqc
+
 
 ## Trimming
 
 > Section update: Day Month Year
+
+For reads derived from short DNA fragments, the 3' ends may contain portions of the Illumina sequencing adapter. This adapter contamination may prevent the reads from aligning to the reference genome and adversely affect the downstream analysis. If you suspect that your reads may be contaminated with adapters (either from the FastQC report ["Overrepresented sequences" or "Adapter content" sections], or from the size distribution of your sequencing libraries), you should run an adapter removal tool. 
+
+### Trim_galore & Cutadapt
+
+
 
 ## Alignment
 
