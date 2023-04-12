@@ -12,6 +12,8 @@
     + [Footprint analysis](#footprint-analysis)
 * [Reference](#reference)
 
+> Last Update: Day Month Year
+
 # Introduction to ATAC-seq
 
 ## Background
@@ -28,29 +30,37 @@ With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treate
 
 # Pipelines for ATAC-seq
 
-> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
+Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
 
 ## Trimming
 
+> Section update: Day Month Year
 
 ## Alignment
+
+> Section update: 11 April 2023
 
 The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa.
 
 ## Post-alignment Filtering
+
+> Section update: Day Month Year
 
 As ATAC-seq is a very noisy technology, we will need to be able to include sufficient quality datasets
 MT reeads
 
 ## Accessible Peak calling
 
+> Section update: Day Month Year
+
 
 ## Differential accessibility
 
+> Section update: Day Month Year
 
 ## Footprint analysis
 
-
+> Section update: Day Month Year
 
 
 
