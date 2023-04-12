@@ -1,36 +1,36 @@
 # Bisulfite manual
 
-* [Introduction to Bisulfite sequencing](#introduction-to-atac-seq)
-    + [Background](#background-for-atac-seq)
-    + [Principle behind ATAC-seq](#principle-behind-atac-seq)
-* [Pipelines for ATAC-seq](#pipelines-for-atac-seq)
-    + [Alignment of ATAC-seq](#alignment-of-atac-seq)
+* [Introduction to Bisulfite sequencing](#introduction-to-bisulfite-sequencing)
+    + [Background](#background)
+    + [Principle](#principle)
+* [Pipelines for Bisulfite sequencing](#pipelines-for-bisulfite-sequencing)
+    + [Trimming](#trimming)
+    + [Alignment](#alignment)
     + [Post-alignment Filtering](#post-alignment-filtering)
-    + [Accessible Peak calling](#accessible-peak-calling)
-    + [Differential accessibility](#differential-accessibility)
-    + [Footprint analysis](#footprint-analysis)
+    + [DNA methylation calling](#dna-methylation-calling)
+    + [Differential methylation](#differential-methylation)
+    + [Methylation Segmentation](#methylation-segmentation)
 * [Reference](#reference)
 
 
-# Introduction to ATAC-seq
+# Introduction to Bisulfite sequencing
 
-Assay for Transposase-Accessible Chromatin using sequencing (ATAC-Seq) is a method to investigate the accessibility of chromatin stucture using Tn5 transposase. Accessible chromatin are highly coupled with regulatory mechanisms of gene expression thus this method can contribute to the identification of regulatory elements such as promoter, enhancer and silencer regions. There is several different techniques developed for the same purpose of ATAC-seq but ATAC-seq shows to be a best option as it easier, faster and require less cells then other techniques. In the same time, ATAC-seq are able to provide short accessible region which is limited in other techniques. 
-
-## Background for ATAC-seq
-
-In eukaryotic organisms, genomes are packed and organised into nuclelosomes which forms the chromatin structure. A  nucleosome is a complex formed by eight histone proteins that is wrapped with ~147bp of DNA. When the DNA is being actively transcribed into RNA, the DNA will be opened and loosened from the nucleosome complex. Many factors, such as the chromatin structure, the position of the nucleosomes, and histone modifications, play an important role in the organization and accessibility of the DNA. Consequently, these factors are also important for the activation and inactivation of genes. In the same time, the change in structure also impacts on the transcription factors binding activity which may increase or decrease based on each TF nature.
-
-## Principle behind ATAC-seq
-
-With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treated with a hyperactive derivative of the Tn5 transposase. A transposase can bind to a transposable element, which is a DNA sequence that can change its position (jump) within a genome. During ATAC-Seq, the modified Tn5 inserts DNA sequences corresponding to truncated Nextera adapters into open regions of the genome and concurrently, the DNA is sheared by the transposase activity. The read library is then prepared for sequencing, including PCR amplification with full Nextera adapters and purification steps. Paired-end reads are recommended for ATAC-Seq for the reasons described here.
+## Background
 
 
 
-# Pipelines for ATAC-seq
+## Principle
 
-> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
 
-## Alignment of ATAC-seq
+
+# Pipelines for Bisulfite sequencing
+
+> 
+
+## Trimming
+
+
+## Alignment
 
 The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa.
 
@@ -39,13 +39,13 @@ The alignemnt of ATAC-seq remains to be the few main alignment tools for genome 
 As ATAC-seq is a very noisy technology, we will need to be able to include sufficient quality datasets
 MT reeads
 
-## Accessible Peak calling
+## DNA methylation calling
 
 
-## Differential accessibility
+## Differential methylation
 
 
-## Footprint analysis
+## Methylation Segmentation
 
 
 # Reference
