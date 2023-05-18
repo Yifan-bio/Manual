@@ -72,6 +72,7 @@ Currectly there is many different pipelines for ATAC-seq but are limited with nu
 
 ### Fastqc
 
+As we have mentioned, ATAC-seq is based on Tn5 transposase which will introduce certain biases. So the start of sequence 
 
 ## Trimming
 
