@@ -34,15 +34,16 @@ With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treate
 
 ### 1. Replicates
 
-Like most high-throughput sequencing applications, ATAC-seq requires that biological replicates be run. This ensures that any signals observed are due to biological effects and not idiosyncracies of one particular sample or its processing. To begin with, two replicates per experimental group are sufficient.
+Same as all techniques, ATAC-seq requires biological replicates to provide accurate results. This ensures that any signals observed are due to biological effects rather then a single replicates handling or processing. To begin with, two replicates per experimental group are sufficient.
 
 ### 2. Controls
 
-With ATAC-seq, control groups are not typically run, presumably due to the expense and the limited value obtained. A control for a given sample would be genomic DNA from the sample that, instead of transposase treatment, is fragmented (e.g. by sonication), has adapters ligated, and is sequenced along with the ATAC sample. Such a control could be useful to help define regions of the genome that are more challenging to sequence or to align reads unambiguously.
+ATAC-seq may be provided with different type of controls. These includes the untreat control, the time zero control, or a simple reference control.
+However, due to the expense of ATAC-seq, many research choose to simply sequence a normal genomic DNA extraction using other fragmentation protocols to collect regions that are problematic for sequencing or aligning. However, this has been covered by the blacklist project done by ENCODE providing a list of regions that may introduce these biases. 
 
 ### 3. PCR amplification
 
-In preparing libraries for sequencing, the samples should be amplified using as few PCR cycles as possible. This helps to reduce PCR duplicates, which are exact copies of DNA fragments that can interfere with the biological signal of interest.
+In preparing libraries for sequencing, the samples should be amplified using as few PCR cycles as possible. This helps to reduce PCR duplicates, which are exact copies of DNA fragments that can interfere with the biological signal of interest. Techniques such as ATAC-seq which uses an enzyme is well known to be suffering from duplication because of (a) PCR cycles or (b) the same region were extracted from many different cells.
 
 ### 4. Sequencing depth
 
@@ -50,7 +51,7 @@ The optimal sequencing depth varies based on the size of the reference genome an
 
 ### 5. Sequencing mode
 
-For ATAC-seq, we recommend paired-end sequencing, for several reasons.
+For ATAC-seq, use paired-end sequencing, for several reasons.
 
  - More sequence data leads to better alignment results. Many genomes contain numerous repetitive elements, and failing to align reads to certain genomic regions unambiguously renders those regions less accessible to the assay. Additional sequence data, such as with paired-end sequencing, helps to reduce these alignment ambiguities.
 
@@ -60,7 +61,7 @@ For ATAC-seq, we recommend paired-end sequencing, for several reasons.
 
 ### 6. Mitochondria
 
-It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads that are derived from mitochondrial DNA (for example, see this discussion). Since there are no ATAC-seq peaks of interest in the mitochondrial genome, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
+It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads (30~80%) that are derived from mitochondrial DNA. Since there are no ATAC-seq peaks of interest in the mitochondrial genome, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
 
 # Pipelines for ATAC-seq
 
@@ -72,7 +73,7 @@ Currectly there is many different pipelines for ATAC-seq but are limited with nu
 
 ### Fastqc
 
-As we have mentioned, ATAC-seq is based on Tn5 transposase which will introduce certain biases. So the start of sequence 
+As we have mentioned, ATAC-seq is based on Tn5 transposase which will introduce certain biases. In general cases, we expect the 3' of reads to contain a bias in the sequence context as Tn5 transposase are known to priotise the binding towards a specific regions. The following is example of the region.
 
 ## Trimming
 
