@@ -6,34 +6,39 @@ These are a collection of scripts and instructions to leverage cloud computing p
 
 ## Table of contents
 
-+ [Cloud platforms](https://github.com/developerpiru/cloudservers#cloud-platforms)
-
-  + [Google Cloud Platform (GCP)](https://github.com/developerpiru/cloudservers#google-cloud-platform-gcp)
-    + [Getting started with GCP](https://github.com/developerpiru/cloudservers#getting-started-with-gcp)
-    + [Creating a new compute instance](https://github.com/developerpiru/cloudservers#creating-a-new-compute-instance)
-    + [Creating a storage bucket](https://github.com/developerpiru/cloudservers#creating-a-storage-bucket)
-    + [How to setup a newly created VM](https://github.com/developerpiru/cloudservers#how-to-setup-a-newly-created-vm)
-      + [Setting up GCSFuse](https://github.com/developerpiru/cloudservers#setting-up-gcsfuse)
-      + [Install Miniconda](https://github.com/developerpiru/cloudservers#install-miniconda)
-      + [Install Basemount](https://github.com/developerpiru/cloudservers#installing-basemount)
-    + [Install VNC server on your VM](https://github.com/developerpiru/cloudservers#install-vnc-server)
-      + [Automatically install VNC server on Ubuntu](https://github.com/developerpiru/cloudservers#automatically-install-vnc-server-on-ubuntu)
-      + [Install VNC client on your local computer](https://github.com/developerpiru/cloudservers#install-vnc-client-on-your-local-computer)
-      + [Connecting to VNC server on remote server](https://github.com/developerpiru/cloudservers#connecting-to-vnc-server-on-remote-server)
-      + [Stopping the VNC server](https://github.com/developerpiru/cloudservers#stopping-the-vnc-server)
-    + [Getting raw read counts with your VM](https://github.com/developerpiru/cloudservers#rna-seq-analysis-with-your-vm)     
-
 ---
 
-## Cloud platforms
+## Google Cloud Platform (GCP)
 
-### Google Cloud Platform (GCP)
+### Create account and activate google cloud platform
 
 Create a Google account if you don't already have one and then go to https://console.cloud.google.com/ to setup your cloud account. 
 
-## Getting started with GCP
+---
+### Creating a storage bucket
 
-### Creating a new compute instance
+Think of a storage bucket as a cloud storage drive where you can save your files. You can use it as a shared folder to transfer files to and from your local computer to a VM. 
+
+1. From the [GCP Dashboard](https://console.cloud.google.com/home/dashboard), click on the menu button, then click on **Storage**. 
+
+2. This will open the storage browser and list any buckets you have (similar to the VM Instances page. Click **Create Bucket** at the top.
+
+3. This will open a new page where you must enter details for your new bucket.
+
+![Image of GCP Dashboard](Screenshots/GCP/createbucket-1.png)
+
+  + You must specify a globally unique name (meaning the name must not be taken by anyone else)
+  + For **Location type**, select Region
+  + For **Location**, select the **same region as the VM instances you have created!**
+  + Leave all other settings as defaults and click **Create** at the bottom.
+
+4. Your newly created bucket will be listed. Click on its name to view its contents (which will be empty right now).
+
+5. You can upload files by using the buttons provided or by dragging files into the browser from your computer.
+
+---
+
+### Creating a compute instance
 
 1. From the [GCP Dashboard](https://console.cloud.google.com/home/dashboard), click on the menu button (1), then hover over **Computer Engine** to display the pop-up menu (2), then click on **VM instances** (3)
   ![Image of GCP Dashboard](Screenshots/GCP/createinstance.png)
@@ -61,29 +66,7 @@ Create a Google account if you don't already have one and then go to https://con
 
 5. To connect to the VM, click on the **SSH** button (after ensuring it is on). You can use the menu button to Start, Stop, Reset, or Delete a VM.
 
----
-### Creating a storage bucket
 
-Think of a storage bucket as a cloud storage drive where you can save your files. You can use it as a shared folder to transfer files to and from your local computer to a VM. 
-
-1. From the [GCP Dashboard](https://console.cloud.google.com/home/dashboard), click on the menu button, then click on **Storage**. 
-
-2. This will open the storage browser and list any buckets you have (similar to the VM Instances page. Click **Create Bucket** at the top.
-
-3. This will open a new page where you must enter details for your new bucket.
-
-![Image of GCP Dashboard](Screenshots/GCP/createbucket-1.png)
-
-  + You must specify a globally unique name (meaning the name must not be taken by anyone else)
-  + For **Location type**, select Region
-  + For **Location**, select the **same region as the VM instances you have created!**
-  + Leave all other settings as defaults and click **Create** at the bottom.
-
-4. Your newly created bucket will be listed. Click on its name to view its contents (which will be empty right now).
-
-5. You can upload files by using the buttons provided or by dragging files into the browser from your computer.
-
----
 ### How to setup a newly created VM
 
 #### Setting up GCSFuse
