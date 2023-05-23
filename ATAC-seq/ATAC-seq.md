@@ -4,7 +4,7 @@
     + [Background](#background)
     + [Principle](#principle)
     + [Experimental Design](#experimental-design)
-* [Pipelines for ATAC-seq](#pipelines-for-atac-seq)
+* [Pipelines for ATAC-seq](#pipeline-for-atac-seq)
     + [Quality Control](#quality-control)
     + [Trimming](#trimming)
     + [Alignment](#alignment)
@@ -24,9 +24,13 @@ Assay for Transposase-Accessible Chromatin using sequencing (ATAC-Seq) is a meth
 
 In eukaryotic organisms, genomes are packed and organised into nuclelosomes which forms the chromatin structure. A  nucleosome is a complex formed by eight histone proteins that is wrapped with ~147bp of DNA. When the DNA is being actively transcribed into RNA, the DNA will be opened and loosened from the nucleosome complex. Many factors, such as the chromatin structure, the position of the nucleosomes, and histone modifications, play an important role in the organization and accessibility of the DNA. Consequently, these factors are also important for the activation and inactivation of genes. In the same time, the change in structure also impacts on the transcription factors binding activity which may increase or decrease based on each TF nature.
 
+---
+
 ## Principle
 
 With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treated with a hyperactive derivative of the Tn5 transposase. A transposase can bind to a transposable element, which is a DNA sequence that can change its position (jump) within a genome. During ATAC-Seq, the modified Tn5 inserts DNA sequences corresponding to truncated Nextera adapters into open regions of the genome and concurrently, the DNA is sheared by the transposase activity. The read library is then prepared for sequencing, including PCR amplification with full Nextera adapters and purification steps. Paired-end reads are recommended for ATAC-Seq for the reasons described here.
+
+---
 
 ## Experimental Design
 
@@ -63,9 +67,11 @@ For ATAC-seq, use paired-end sequencing, for several reasons.
 
 It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads (30~80%) that are derived from mitochondrial DNA. Since there are no ATAC-seq peaks of interest in the mitochondrial genome, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
 
-# Pipelines for ATAC-seq
+---
 
-Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
+# Pipeline for ATAC-seq
+
+> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages. 
 
 ## Quality Control
 
@@ -73,7 +79,7 @@ Currectly there is many different pipelines for ATAC-seq but are limited with nu
 
 ### Fastqc
 
-As we have mentioned, ATAC-seq is based on Tn5 transposase which will introduce certain biases. In general cases, we expect the 3' of reads to contain a bias in the sequence context as Tn5 transposase are known to priotise the binding towards a specific regions. The following is example of the region.
+ATAC-seq is based on Tn5 transposase which will introduce certain biases. In general cases, we expect the 3' of reads to contain a bias in the sequence context as Tn5 transposase are known to priotise the binding towards a specific regions. The following is example of the region.
 
 ## Trimming
 
@@ -112,7 +118,7 @@ MT reeads
 > Section update: Day Month Year
 
 
-
+---
 
 # Reference
 
