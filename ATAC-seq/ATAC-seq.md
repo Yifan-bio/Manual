@@ -172,14 +172,13 @@ We have now finished the data preprocessing. Next, in order to find regions corr
 
 ### Genrich
 
-Genrichis still not published and there is issues on more reads you have, the less peaks you get. However, it is particular easier and more computational ease to run. 
+Genrich is still not published and there is issues on more reads you have, the less peaks you get. However, it is more computational easy to use and less computation resources to use. Additionally, it allows the combination of multiple replicates Genrich can allow the user to do the post-alignment filtering in the algorithm by just incorporating the commands in the algorithm. However, it requires MASSIVE computational power so do it before the peak calling step.
 
 ```sh
 Genrich -t $input.bam \
         -o $output.narrowPeak \
         -k $output.log \
         -E $Blacklist.bed \     # Remove regions with a high accessibility across many techniques
-        -m 30 \                 # But we have already removed the low quality, so not necessary
         -j                      # ATAC-seq mode
 ```
 
