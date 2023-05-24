@@ -101,11 +101,23 @@ The alignemnt of ATAC-seq remains to be the few main alignment tools for genome 
 
 ### Bowtie2
 
-Paramter to include:
-
-Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 1000 because we know some valid read pairs are from this fragment length. We will use the --very-sensitive parameter to have more chance to get the best match even if it takes a bit longer to run. We will run the end-to-end mode because we trimmed the adapters so we expect the whole read to map, no clipping of ends is needed. --no-mixed
+Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 1000 because we know some valid read pairs are from this fragment length. 
 
 You might be surprised by the number of uniquely mapped compared to the number of multi-mapped reads (reads mapping to more than one location in the genome). One of the reasons is that we have used the parameter --very-sensitive. Bowtie2 considers a read as multi-mapped even if the second hit has a much lower quality than the first one. Another reason is that we have reads that map to the mitochondrial genome. The mitochondrial genome has a lot of regions with similar sequence.
+
+```sh
+# Bowtie2 alignment
+bowtie2 --very-sensitive \ # more chance to get the best match even if it takes a bit longer to run
+        --end-to-end \     # trimmed the adapters so we expect the whole read to map
+        -p 4               # Number of threads
+        --no-mixed \       # Only allow paired end reads
+        -X 1000 \          # Valid read lengths are generally below 1000bp
+        -x $Index \
+        -1 $Read1 \
+        -2 $Read2 \
+        -S ${prefix}.sam \
+        > ${prefix}.bowtie2.log
+```
 
 ## Post-alignment Filtering
 
@@ -156,7 +168,11 @@ samtools index ${prefix}.final.bam
 
 > Section update: Day Month Year
 
-We have now finished the data preprocessing. Next, in order to find regions corresponding to potential open chromatin regions, we want to identify regions where reads have piled up (peaks) greater than the background read coverage. The tools which are currently used are Genrich and MACS2. MACS2 is more widely used. Genrich has a mode dedicated to ATAC-Seq but is still not published and the more reads you have, the less peaks you get (see the issue here). That’s why we will not use Genrich in this tutorial.
+We have now finished the data preprocessing. Next, in order to find regions corresponding to potential open chromatin regions, we want to identify regions where reads have piled up (peaks) greater than the background read coverage. The tools which are currently used are Genrich and HMMRATAC. MACS2 was widely used but it incoporated HMMRATAC as their ATAC-seq algorithm in recent update. 
+
+### Genrich
+
+Genrich has a mode dedicated to ATAC-Seq but is still not published and the more reads you have, the less peaks you get (see the issue here). That’s why we will not use Genrich in this tutorial.
 
 At this step, two approaches exists:
 
@@ -170,6 +186,8 @@ Figure 16: Nextera Library Construction
 This means in order to have the read start site reflecting the centre of where Tn5 bound, the reads on the positive strand should be shifted 4 bp to the right and reads on the negative strands should be shifted 5 bp to the left as in Buenrostro et al. 2013. Genrich can apply these shifts when ATAC-seq mode is selected. In most cases, we do not have 9bp resolution so we don’t take it into account but if you are interested in the footprint, this is important.
 
 If we only assess the coverage of the 5’ extremity of the reads, the data would be too sparse and it would be impossible to call peaks. Thus, we will extend the start sites of the reads by 200bp (100bp in each direction) to assess coverage.
+
+### HMMRATAC
 
 ## Differential accessibility
 
