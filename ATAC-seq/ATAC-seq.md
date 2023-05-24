@@ -67,7 +67,7 @@ For ATAC-seq, use paired-end sequencing, for several reasons.
 
 ### 6. Mitochondria
 
-It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads (30~80%) that are derived from mitochondrial DNA. Since there are no ATAC-seq peaks of interest in the mitochondrial genome, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
+It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads (30~80%) that are derived from mitochondrial DNA because it is nucleosome-free and thus very accessible to Tn5 insertion. Since the whole mitochondrial genome is accessible throughout cells, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
 
 ---
 
@@ -125,8 +125,9 @@ bowtie2 --very-sensitive \ # more chance to get the best match even if it takes 
 
 ### Step 1 Mitochondrial removal
 
-ATAC-Seq datasets have been reported to contain 30% to 80% of reads that map to the mitchondrial genome because it is nucleosome-free and thus very accessible to Tn5 insertion. The mitchondrial genome is uninteresting for ATAC-Seq so we remove these reads. It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
-
+ATAC-Seq datasets have been reported to contain [mitchondrial contamination](#6.-mitochondria). Reads derived from mitochondrial DNA represent noise in ATAC-seq datasets and can substantially inflate the background level. Thus, we remove these reads. 
+It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
+[Google Cloud Platform (GCP)](https://github.com/developerpiru/cloudservers#google-cloud-platform-gcp)
 > We remove mitochondrial reads using "chrM" as it chromosome name. However, this varies across databases and this is for Gencode. ENSEMBL database uses "MT" as mitochondrial read chromosome names.
 
 ```sh
