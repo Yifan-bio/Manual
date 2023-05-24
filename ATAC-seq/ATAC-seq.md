@@ -101,7 +101,9 @@ The alignemnt of ATAC-seq remains to be the few main alignment tools for genome 
 
 ### Bowtie2
 
-Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 1000 because we know some valid read pairs are from this fragment length. We will use the --very-sensitive parameter to have more chance to get the best match even if it takes a bit longer to run. We will run the end-to-end mode because we trimmed the adapters so we expect the whole read to map, no clipping of ends is needed. 
+Paramter to include:
+
+Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 1000 because we know some valid read pairs are from this fragment length. We will use the --very-sensitive parameter to have more chance to get the best match even if it takes a bit longer to run. We will run the end-to-end mode because we trimmed the adapters so we expect the whole read to map, no clipping of ends is needed. --no-mixed
 
 You might be surprised by the number of uniquely mapped compared to the number of multi-mapped reads (reads mapping to more than one location in the genome). One of the reasons is that we have used the parameter --very-sensitive. Bowtie2 considers a read as multi-mapped even if the second hit has a much lower quality than the first one. Another reason is that we have reads that map to the mitochondrial genome. The mitochondrial genome has a lot of regions with similar sequence.
 
@@ -109,12 +111,46 @@ You might be surprised by the number of uniquely mapped compared to the number o
 
 > Section update: Day Month Year
 
-We apply some filters to the reads after the mapping. ATAC-Seq datasets have a lot of reads that map to the mitchondrial genome because it is nucleosome-free and thus very accessible to Tn5 insertion. The mitchondrial genome is uninteresting for ATAC-Seq so we remove these reads. We also remove reads with low mapping quality and reads that are not properly paired.
+### Step 1 Mitochondrial removal
 
-High numbers of mitochondrial reads can be a problem in ATAC-Seq. Some ATAC-Seq samples have been reported to be 80% mitochondrial reads and so wet-lab methods have been developed to deal with this issue Corces et al. 2017 and Litzenburger et al. 2017. It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
+ATAC-Seq datasets have been reported to contain 30% to 80% of reads that map to the mitchondrial genome because it is nucleosome-free and thus very accessible to Tn5 insertion. The mitchondrial genome is uninteresting for ATAC-Seq so we remove these reads. It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
 
-Because of the PCR amplification, there might be read duplicates (different reads mapping to exactly the same genomic region) from overamplification of some regions. As the Tn5 insertion is random within an accessible region, we do not expect to see fragments with the same coordinates. We consider such fragments to be PCR duplicates. We will remove them with Picard MarkDuplicates.
-Once again, if you have a high number of replicates it does not mean that your data are not good, it just means that you sequenced too much compared to the diversity of the library you generated. Consequently, libraries with a high portion of duplicates should not be resequenced as this would not increase the amount of data.
+> We remove mitochondrial reads using "chrM" as it chromosome name. However, this varies across databases and this is for Gencode. ENSEMBL database uses "MT" as mitochondrial read chromosome names.
+
+```sh
+samtools view -@ $threads -h $input.bam | grep -v chrM | samtools sort -@ $threads -O bam -o $output.bam
+```
+
+### Step 2 Low quality removal
+
+We also remove reads with low mapping quality. Bowtie2 marks multimapped reads as below 20 so removing low quality can remove these reads. And we can also remove low quality alignment which has a lack of confident.
+
+> The command we provide here only keeps primary alignment and proper paired reads. And also a mapping quality of above 30 (bowite2 max score is 42) providing sufficient quality
+
+```sh
+samtools view -h -b -q 30 -@ $threads -F 1804 -o $output.bam $input.bam
+```
+
+### Step 3 PCR deduplication ###
+
+Because of the PCR amplification, there might be read duplicates (different reads mapping to exactly the same genomic region) from overamplification of some regions. As the Tn5 insertion is random within an accessible region, we do not expect to see fragments with the same coordinates. We consider such fragments to be PCR duplicates. We will remove them with Picard MarkDuplicates. There is samtools and sambamba deduplication which was previously shown to have a lack in ability for paired-end reads deduplication, there isnt recent studies on deduplication for new versions of these package.
+
+> Once again, if you have a high number of duplicates it does not mean that your data are not good, it just means that you sequenced too much compared to the diversity of the library you generated. Consequently, libraries with a high portion of duplicates should not be resequenced as this would not increase the amount of data.
+
+```sh
+picard MarkDuplicates Input=$input.bam Output=$output.bam METRICS_FILE=$dedup.txt REMOVE_DUPLICATES=true
+```
+
+### Overall command 
+
+```sh
+# Combine step 1 and 2
+samtools view -@ 4 -h ${prefix}.bam | grep -v chrM | samtools sort -h -b -q 30 -@ 4 -O bam -F 1804 -o ${prefix}.rmChrM.bam
+# Step 3
+picard MarkDuplicates Input=${prefix}.rmChrM.bam Output=${prefix}.rmChrM_dedup.bam METRICS_FILE=${prefix}.dedup.txt REMOVE_DUPLICATES=true
+# Indexing the file for future use
+samtools index ${prefix}.final.bam
+```
 
 ## Accessible Peak calling
 
