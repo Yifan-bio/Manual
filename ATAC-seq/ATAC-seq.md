@@ -168,11 +168,21 @@ samtools index ${prefix}.final.bam
 
 > Section update: Day Month Year
 
-We have now finished the data preprocessing. Next, in order to find regions corresponding to potential open chromatin regions, we want to identify regions where reads have piled up (peaks) greater than the background read coverage. The tools which are currently used are Genrich and HMMRATAC. MACS2 was widely used but it incoporated HMMRATAC as their ATAC-seq algorithm in recent update. 
+We have now finished the data preprocessing. Next, in order to find regions corresponding to potential open chromatin regions, we want to identify regions where reads have piled up (peaks) greater than the background read coverage. The tools which are currently used are Genrich and HMMRATAC. MACS2 was widely used but it incoporated HMMRATAC as their ATAC-seq algorithm in recent update. Both Genrich and HMMRATAC has not been updated in the past three years.
 
 ### Genrich
 
-Genrich has a mode dedicated to ATAC-Seq but is still not published and the more reads you have, the less peaks you get (see the issue here). That’s why we will not use Genrich in this tutorial.
+Genrichis still not published and there is issues on more reads you have, the less peaks you get. However, it is particular easier and more computational ease to run. 
+
+```sh
+Genrich -t $input.bam \
+        -o $output.narrowPeak \
+        -k $output.log \
+        -E $Blacklist.bed \     # Remove regions with a high accessibility across many techniques
+        -m 30 \                 # But we have already removed the low quality, so not necessary
+        -j                      # ATAC-seq mode
+```
+
 
 At this step, two approaches exists:
 
@@ -188,6 +198,8 @@ This means in order to have the read start site reflecting the centre of where T
 If we only assess the coverage of the 5’ extremity of the reads, the data would be too sparse and it would be impossible to call peaks. Thus, we will extend the start sites of the reads by 200bp (100bp in each direction) to assess coverage.
 
 ### HMMRATAC
+
+
 
 ## Differential accessibility
 
