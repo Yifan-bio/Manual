@@ -69,6 +69,10 @@ For ATAC-seq, use paired-end sequencing, for several reasons.
 
 It is a well-known problem that ATAC-seq datasets usually contain a large percentage of reads (30~80%) that are derived from mitochondrial DNA because it is nucleosome-free and thus very accessible to Tn5 insertion. Since the whole mitochondrial genome is accessible throughout cells, these reads are discarded in the computational analysis and thus represent a waste of sequencing resources. The Omni-ATAC method uses detergents to remove mitochondria from the samples prior to sequencing and is likely to be accessible for most researchers.
 
+### 7. Tn5 bias
+
+Hyperactive Tn5 transposase are used for the development of ATAC-seq library. The Tn5 transposase are found to biasly prefer the interaction to a certain pattern which can be observed in the fastqc result. Additionally, Tn5 intorduces a 9bp bias in which the Tn5 transposes cuts 4/5bp further then the 5' end of Read1 and Read2 so we need to furhter extend the reads for the region to collect the accurate interaction site of Tn5 with the accessible region. This means in order to have the read start site reflecting the centre of where Tn5 bound, the reads on the positive strand should be shifted 4 bp to the right and reads on the negative strands should be shifted 5 bp to the left as in Buenrostro et al. 2013. 
+
 ---
 
 # Pipeline for ATAC-seq
@@ -125,9 +129,9 @@ bowtie2 --very-sensitive \ # more chance to get the best match even if it takes 
 
 ### Step 1 Mitochondrial removal
 
-ATAC-Seq datasets have been reported to contain [mitchondrial contamination](#6.-mitochondria). Reads derived from mitochondrial DNA represent noise in ATAC-seq datasets and can substantially inflate the background level. Thus, we remove these reads. 
+ATAC-Seq datasets have been reported to contain [mitchondrial contamination](#experimental-design). Reads derived from mitochondrial DNA represent noise in ATAC-seq datasets and can substantially inflate the background level. Thus, we remove these reads. 
 It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
-[Google Cloud Platform (GCP)](https://github.com/developerpiru/cloudservers#google-cloud-platform-gcp)
+
 > We remove mitochondrial reads using "chrM" as it chromosome name. However, this varies across databases and this is for Gencode. ENSEMBL database uses "MT" as mitochondrial read chromosome names.
 
 ```sh
@@ -158,7 +162,7 @@ picard MarkDuplicates Input=$input.bam Output=$output.bam METRICS_FILE=$dedup.tx
 
 ```sh
 # Combine step 1 and 2
-samtools view -@ 4 -h ${prefix}.bam | grep -v chrM | samtools sort -h -b -q 30 -@ 4 -O bam -F 1804 -o ${prefix}.rmChrM.bam
+samtools view -@ 4 -h -b -q 30 -@ 4 -f 2 ${prefix}.bam | grep -v chrM | samtools sort -o ${prefix}.rmChrM.bam
 # Step 3
 picard MarkDuplicates Input=${prefix}.rmChrM.bam Output=${prefix}.rmChrM_dedup.bam METRICS_FILE=${prefix}.dedup.txt REMOVE_DUPLICATES=true
 # Indexing the file for future use
@@ -173,7 +177,7 @@ We have now finished the data preprocessing. Next, in order to find regions corr
 
 ### Genrich
 
-Genrich is still not published and there is issues on more reads you have, the less peaks you get. However, it is more computational easy to use and less computation resources to use. Additionally, it allows the combination of multiple replicates Genrich can allow the user to do the post-alignment filtering in the algorithm by just incorporating the commands in the algorithm. However, it requires MASSIVE computational power so do it before the peak calling step.
+Genrich is still not published and there is issues on more reads you have, the less peaks you get. However, it is more computational easy to use and less computation resources to use. Additionally, it allows the combination of multiple replicates Genrich can allow the user to do the post-alignment filtering in the algorithm by just incorporating the commands in the algorithm. However, it requires MASSIVE computational power so do it before the peak calling step. This algorithm provides a narrowPeak alogrithm that provides the user with bunch of small peaks. Genrich can apply the Tn5 shifts when ATAC-seq mode is selected. In most cases, we do not have 9bp resolution so we don’t take it into account.
 
 ```sh
 Genrich -t $input.bam \
@@ -183,22 +187,9 @@ Genrich -t $input.bam \
         -j                      # ATAC-seq mode
 ```
 
-
-At this step, two approaches exists:
-
-The first one is to select only paired whose fragment length is below 100bp corresponding to nucleosome-free regions and to use a peak calling like you would do for a ChIP-seq, joining signal between mates. The disadvantages of this approach is that you can only use it if you have paired-end data and you will miss small open regions where only one Tn5 bound.
-The second one chosen here is to use all reads to be more exhaustive. In this approach, it is very important to re-center the signal of each reads on the 5’ extremity (read start site) as this is where Tn5 cuts. Indeed, you want your peaks around the nucleosomes and not directly on the nucleosome:
-
-When Tn5 cuts an accessible chromatin locus it inserts adapters separated by 9bp (Kia et al. 2017):
-
-Nextera Library Construction. 
-Figure 16: Nextera Library Construction
-This means in order to have the read start site reflecting the centre of where Tn5 bound, the reads on the positive strand should be shifted 4 bp to the right and reads on the negative strands should be shifted 5 bp to the left as in Buenrostro et al. 2013. Genrich can apply these shifts when ATAC-seq mode is selected. In most cases, we do not have 9bp resolution so we don’t take it into account but if you are interested in the footprint, this is important.
-
-If we only assess the coverage of the 5’ extremity of the reads, the data would be too sparse and it would be impossible to call peaks. Thus, we will extend the start sites of the reads by 200bp (100bp in each direction) to assess coverage.
-
 ### HMMRATAC
 
+Another package that was developed for ATAC-seq peak calling is HMMRATAC. It provides the user with gappedPeak statergy which reports the accessible peak region and the flanking region that is hypothesized to support the accessibility. 
 
 
 ## Differential accessibility
@@ -211,7 +202,8 @@ Currently there is no package specially designed for ATAC-seq. Commonly people u
 
 > Section update: Day Month Year
 
-
+ but if you are interested in the footprint, this is important to take into account of 9bp shift
+ 
 ---
 
 # Reference
