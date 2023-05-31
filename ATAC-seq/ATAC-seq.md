@@ -97,6 +97,9 @@ For reads derived from short DNA fragments, the 3' ends may contain portions of 
 
 ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the reads. 
 
+
+> If we just use Cutadapt then it will use a default of remove trim 
+
 ## Alignment
 
 > Section update: 11 April 2023
