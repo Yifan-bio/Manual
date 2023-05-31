@@ -95,7 +95,7 @@ For reads derived from short DNA fragments, the 3' ends may contain portions of 
 
 ### Trim_galore & Cutadapt
 
-ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the rest of the 
+ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the reads. 
 
 ## Alignment
 
