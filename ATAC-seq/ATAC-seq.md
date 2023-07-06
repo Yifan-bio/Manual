@@ -77,16 +77,19 @@ Hyperactive Tn5 transposase are used for the development of ATAC-seq library. Th
 
 # Pipeline for ATAC-seq
 
-> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
-> Pipeline that has came across: snakepipe; nextflow; AIAP; PEPATAC
+> At the current time, many different pipeline has been developed for ATAC-seq with a very limited variety of packages. Some example pipeline including snakepipe; nextflow; AIAP; PEPATAC
 
 ## Quality Control
 
-> Section update: Day Month Year
+> Section update: 06 July 2023
 
-### Fastqc
+Undoubtedly, assessing the quality of sequence data is the first step. Researchers commonly employ the tool **[fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)**. ATAC-seq is known to introduce various biases, as mentioned earlier. Therefore, in the fastqc results, certain indicators of poor quality are generally expected. These include a bias in the 3' due to the sequence bias of the Tn5 transposase, a high duplication rate, and uneven sequence length distribution. The reasons for each are explained below:
 
-ATAC-seq is based on Tn5 transposase which will introduce certain biases. In general cases, we expect the 3' of reads to contain a bias in the sequence context as Tn5 transposase are known to priotise the binding towards a specific regions. The following is example of the region.
+Regarding sequence bias, we have mentioned that the Tn5 transposase exhibits a preference for interacting with specific sequence combinations. As a result, these sequences are more commonly found at the cutting points of the Tn5, leading to a sequence bias at the start of sequence reads of ATAC-seq.
+
+Regarding the high duplication rate, since the Tn5 transposase exhibits bias, it tends to target similar regions across the sample cells. Consequently, it is highly likely to find two different identical regions targeted in the same sample, resulting in a high duplication rate. However, some researchers consider this a normal outcome of ATAC-seq bias, while others see it as a potential bias that could introduce errors due to potential PCR duplication mixtures.
+
+The last bias is the sequence length distribution. ATAC-seq does not perform length selection, meaning sequences of all lengths are included in the PCR step. In these experiments, it is possible that regions below a certain length are extracted, leading to varying length sizes. Thus, this is also why trimming is a crucial step in ATAC-seq.
 
 ## Trimming
 
