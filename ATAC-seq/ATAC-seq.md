@@ -77,7 +77,8 @@ Hyperactive Tn5 transposase are used for the development of ATAC-seq library. Th
 
 # Pipeline for ATAC-seq
 
-> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages. 
+> Currectly there is many different pipelines for ATAC-seq but are limited with number of usable packages.
+> Pipeline that has came across: snakepipe; nextflow; AIAP; PEPATAC
 
 ## Quality Control
 
