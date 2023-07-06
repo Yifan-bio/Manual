@@ -73,6 +73,14 @@ It is a well-known problem that ATAC-seq datasets usually contain a large percen
 
 Hyperactive Tn5 transposase are used for the development of ATAC-seq library. The Tn5 transposase are found to biasly prefer the interaction to a certain pattern which can be observed in the fastqc result. Additionally, Tn5 intorduces a 9bp bias in which the Tn5 transposes cuts 4/5bp further then the 5' end of Read1 and Read2 so we need to furhter extend the reads for the region to collect the accurate interaction site of Tn5 with the accessible region. This means in order to have the read start site reflecting the centre of where Tn5 bound, the reads on the positive strand should be shifted 4 bp to the right and reads on the negative strands should be shifted 5 bp to the left as in Buenrostro et al. 2013. 
 
+### 8. Read Size
+
+Different from other technique, ATAC-seq does not perform additional step between enzyme treatment and PCR amplificaiton. Therefore, in this case, all sequence of all size will be included into the sequencing step. Due to the principle of ATAC-seq, it allows us to islate accessible regions that are as low as to 40bp which is lower the the recommended sequence length of above 75bp. Therefore, analysis will need to consider the case when a sequence read length is way lower then the actual read length we have. And also due to this case, we expect that many of the reads will contain adapter sequence within the sequences reads so trimming will therefor be vital. 
+
+In the original study of ATAC-seq, they hypothsized that ATAC-seq isolate regions based on the different number of nucleosome been removed. Listed below
+- <100bp (nucleosome-free regions): These reads are expected to contain no nucleosomes whithin these regions
+- 100bp 
+
 ---
 
 # Pipeline for ATAC-seq
