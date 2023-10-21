@@ -9,3 +9,13 @@ for i in $(ls ./*/RAW/*.fastq.gz | sed 's/[1-2].fastq.gz//' | uniq); do
   done
 ````
 
+````sh
+for i in $(ls ./*814/RAW/*.gz); do
+  o="$(basename $i)";
+  o=$(echo $o | sed 's/.fastq.gz//') ;
+  d=$(echo $i | cut -d "/" -f2) ;
+  salmon quant -i ../support_doc/Gencode/salmon_V43_index/salmon_v43_index/ -l A -r ${i} -p 8 --validateMappings --seqBias --recoverOrphans -o ./$d/$o ;
+  done
+````
+
+
