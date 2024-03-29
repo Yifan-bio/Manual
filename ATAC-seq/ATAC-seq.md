@@ -40,7 +40,7 @@ With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treate
 
 ### 1. Replicates
 
-Same as all techniques, ATAC-seq requires biological replicates to provide accurate results. This ensures that any signals observed are due to biological effects rather then a single replicates handling or processing. To begin with, two replicates per experimental group are sufficient.
+Same as all techniques, ATAC-seq requires biological replicates to provide accurate results. This ensures that any signals observed are due to biological effects rather then a single replicates handling or processing. To begin (but more is better) with, two replicates per experimental group are sufficient.
 
 ### 2. Controls
 
@@ -53,7 +53,7 @@ In preparing libraries for sequencing, the samples should be amplified using as 
 
 ### 4. Sequencing depth
 
-The optimal sequencing depth varies based on the size of the reference genome and the degree of open chromatin expected. For studies of human samples, Buenrostro et al. (2015) recommend more than 50 million mapped reads per sample.
+The optimal sequencing depth varies based on the size of the reference genome and the degree of open chromatin expected. For studies of human samples, Buenrostro et al. (2015) recommend more than 50 million mapped reads per sample. You will need atleast this depth for use footprint analysis, the detection of TF interaction pattern in the sample.
 
 ### 5. Sequencing mode
 
@@ -79,7 +79,10 @@ Different from other technique, ATAC-seq does not perform additional step betwee
 
 In the original study of ATAC-seq, they hypothsized that ATAC-seq isolate regions based on the different number of nucleosome been removed. Listed below
 - <100bp (nucleosome-free regions): These reads are expected to contain no nucleosomes whithin these regions
-- 100bp 
+- 100bp : Contains one nucleosome
+- 200bp : Contain two nucleosomes
+- 300bp: Contain three nucleosomes
+- >2000bp: ATAC-seq protocol does not have a size filtering step, however, due to the limitation of illumina sequencing, read with too many protein interaction will not be attached to the illumina platform and if they do, reads with a length of above 2000bp will not be sufficiently sequenced.
 
 ---
 
