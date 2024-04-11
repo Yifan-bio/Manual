@@ -106,29 +106,25 @@ The last bias is the sequence length distribution. ATAC-seq does not perform len
 
 > Section update: Day Month Year
 
-For reads derived from short DNA fragments, the 3' ends may contain portions of the Illumina sequencing adapter. This adapter contamination may prevent the reads from aligning to the reference genome and adversely affect the downstream analysis. If you suspect that your reads may be contaminated with adapters (either from the FastQC report or from the size distribution of your sequencing libraries), you should run an adapter removal tool. 
+For reads derived from short DNA fragments, the 3' ends may contain portions of the Illumina sequencing adapter. This adapter contamination may prevent the reads from aligning to the reference genome and adversely affect the downstream analysis. If you suspect that your reads may be contaminated with adapters (either from the FastQC report or from the size distribution of your sequencing libraries), you should run an adapter removal tool. In this case, ATAC-seq must be trimmed as it does not have any experimental filter.
 
-There is many different packges has been developed to perform this procedure. Common packages include cutadapt and trimmotatic are quite widely applied. The following is an autmated process developed based on cutadapt.
-
-
-
-### Trim_galore & Cutadapt
-
-ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the reads. Few things to take into consideration for this section.
+Few things to take into consideration for this section.
 
 * Need to remove low quality bases
 * Need to remove reads that are too short as it may introduce too many false alignment
 * Need to remove reads with bad pair as ATAC-seq need to be paired.
 
-The forward and reverse adapters are slightly different. We will also trim low quality bases at the ends of the reads (quality less than 20). We will only keep reads that are at least 20 bases long. We remove short reads (< 20bp) as they are not useful, they will either be thrown out by the mapping or may interfere with our results at the end.
 
-> Recommend the use of trim-galore
+There is many different packges has been developed to perform this procedure. Common packages include cutadapt and trimmotatic are quite widely applied. The forward and reverse adapters are slightly different. We will also trim low quality bases at the ends of the reads (quality less than 20). We will only keep reads that are at least 20 bases long. We remove short reads (< 20bp) as they are not useful, they will either be thrown out by the mapping or may interfere with our results at the end.
+
+> Recommend the use of trim-galore that uses cutadapt.
 
 ## Alignment
 
 > Section update: 11 April 2023
 
-The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa.
+The alignemnt of ATAC-seq remains to be the few main alignment tools for genome alignment including bowtie2 and bwa. 
+Alignment is alignment, so skip details here.
 
 ### Bowtie2
 
@@ -224,6 +220,10 @@ Another package that was developed for ATAC-seq peak calling is HMMRATAC. It pro
 > Section update: Day Month Year
 
 Currently there is no package specially designed for ATAC-seq. Commonly people use csaw and DiffBind for ChIP-seq as a replacement.
+
+### DiffBind
+
+DIffBind is developed by using peaks. So DiffBind takes all the peaks that were determined in all replicates and use number of reads in each peak as an value for each new. Then DESeq2.
 
 ## Footprint analysis
 
