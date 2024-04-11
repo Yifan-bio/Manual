@@ -216,7 +216,7 @@ Genrich -t $input.bam \
 
 ### HMMRATAC
 
-Another package that was developed for ATAC-seq peak calling is HMMRATAC. It provides the user with gappedPeak statergy which reports the accessible peak region and the flanking region that is hypothesized to support the accessibility. 
+Another package that was developed for ATAC-seq peak calling is HMMRATAC. It provides the user with gappedPeak statergy which reports the accessible peak region and the flanking region that is hypothesized to support the accessibility. This method uses a machine learning method that divided the whole genome into center of peak, supporting region and background (non peak). Personally I prefer this method.
 
 
 ## Differential accessibility
