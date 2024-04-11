@@ -114,10 +114,15 @@ There is many different packges has been developed to perform this procedure. Co
 
 ### Trim_galore & Cutadapt
 
-ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the reads. 
+ATAC-seq is commonly observed to contain contamination of adapter sequence. So it will be ideal to remove this content from the reads. Few things to take into consideration for this section.
 
+* Need to remove low quality bases
+* Need to remove reads that are too short as it may introduce too many false alignment
+* Need to remove reads with bad pair as ATAC-seq need to be paired.
 
-> If we just use Cutadapt then it will use a default of remove trim 
+The forward and reverse adapters are slightly different. We will also trim low quality bases at the ends of the reads (quality less than 20). We will only keep reads that are at least 20 bases long. We remove short reads (< 20bp) as they are not useful, they will either be thrown out by the mapping or may interfere with our results at the end.
+
+> Recommend the use of trim-galore
 
 ## Alignment
 
@@ -127,10 +132,9 @@ The alignemnt of ATAC-seq remains to be the few main alignment tools for genome 
 
 ### Bowtie2
 
-Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 1000 because we know some valid read pairs are from this fragment length. 
+Here we will use Bowtie2. We will extend the maximum fragment length (distance between read pairs) from 500 to 2000 because we know some valid read pairs are from this fragment length. 
 
 You might be surprised by the number of uniquely mapped compared to the number of multi-mapped reads (reads mapping to more than one location in the genome). One of the reasons is that we have used the parameter --very-sensitive. Bowtie2 considers a read as multi-mapped even if the second hit has a much lower quality than the first one. Another reason is that we have reads that map to the mitochondrial genome. The mitochondrial genome has a lot of regions with similar sequence.
-
 
 ```sh
 # Bowtie2 alignment
