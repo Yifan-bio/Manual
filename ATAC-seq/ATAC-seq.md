@@ -22,7 +22,7 @@
 
 Assay for Transposase-Accessible Chromatin using sequencing (ATAC-Seq) is a method to investigate the accessibility of chromatin stucture using Tn5 transposase. Accessible chromatin are highly coupled with regulatory mechanisms of gene expression thus this method can contribute to the identification of regulatory elements such as promoter, enhancer and silencer regions. There is several different techniques developed for the same purpose of ATAC-seq but ATAC-seq shows to be a best option as it easier, faster and require less cells then other techniques. In the same time, ATAC-seq are able to provide short accessible region which is limited in other techniques. 
 
-In eukaryotic organisms, genomes are packed and organised into nuclelosomes which forms the chromatin structure. A  nucleosome is a complex formed by eight histone proteins that is wrapped with ~147bp of DNA. When the DNA is being actively transcribed into RNA, the DNA will be opened and loosened from the nucleosome complex. Many factors, such as the chromatin structure, the position of the nucleosomes, and histone modifications, play an important role in the organization and accessibility of the DNA. Consequently, these factors are also important for the activation and inactivation of genes. In the same time, the change in structure also impacts on the transcription factors binding activity which may increase or decrease based on each TF nature.
+In eukaryotic organisms, genomes are packed and organised into nuclelosomes which forms the chromatin structure. A nucleosome is a complex formed by eight histone proteins that is wrapped with ~147bp of DNA. When the DNA is being actively transcribed into RNA, the DNA will be opened and loosened from the nucleosome complex. Many factors, such as the chromatin structure, the position of the nucleosomes, and histone modifications, play an important role in the organization and accessibility of the DNA. Consequently, these factors are also important for the activation and inactivation of genes. In the same time, the change in structure also impacts on the transcription factors binding activity which may increase or decrease based on each TF nature.
 
 ---
 
@@ -131,13 +131,14 @@ Here we will use Bowtie2. We will extend the maximum fragment length (distance b
 
 You might be surprised by the number of uniquely mapped compared to the number of multi-mapped reads (reads mapping to more than one location in the genome). One of the reasons is that we have used the parameter --very-sensitive. Bowtie2 considers a read as multi-mapped even if the second hit has a much lower quality than the first one. Another reason is that we have reads that map to the mitochondrial genome. The mitochondrial genome has a lot of regions with similar sequence.
 
+
 ```sh
 # Bowtie2 alignment
 bowtie2 --very-sensitive \ # more chance to get the best match even if it takes a bit longer to run
         --end-to-end \     # trimmed the adapters so we expect the whole read to map
         -p 4               # Number of threads
-        --no-mixed \       # Only allow paired end reads
-        -X 1000 \          # Valid read lengths are generally below 1000bp
+        --no-mixed \       # Only allow paired end reads, ATAC-seq without Paired will be problem
+        -X 2000 \          # Valid read lengths are below 2000bp, as illumina sequencing over 2000bp will fail
         -x $Index \
         -1 $Read1 \
         -2 $Read2 \
