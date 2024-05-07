@@ -14,7 +14,7 @@
     + [Footprint analysis](#footprint-analysis)
 * [Reference](#reference)
 
-> Last Update: Day Month Year
+> Last Update: 07 May 2024
 
 # Introduction to ATAC-seq
 
@@ -30,13 +30,9 @@ In eukaryotic organisms, genomes are packed and organised into nuclelosomes whic
 
 With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treated with a hyperactive derivative of the Tn5 transposase. A transposase can bind to a transposable element, which is a DNA sequence that can change its position (jump) within a genome. During ATAC-Seq, the modified Tn5 inserts DNA sequences corresponding to truncated Nextera adapters into open regions of the genome and concurrently, the DNA is sheared by the transposase activity. The read library is then prepared for sequencing, including PCR amplification with full Nextera adapters and purification steps. Paired-end reads are recommended for ATAC-Seq for the reasons described here.
 
-> For anyone with interest, ATAC-seq introduces modification bias at the 5' of reads which if we would use this technique for DNA methylation detection then we need to remove 9bp from the 5' and activate the dovetail.
-
 ---
 
 ## Experimental Design
-
-> Copied from [ATAC-seq Guidelines](https://informatics.fas.harvard.edu/atac-seq-guidelines.html)
 
 ### 1. Replicates
 
@@ -73,6 +69,8 @@ It is a well-known problem that ATAC-seq datasets usually contain a large percen
 
 Hyperactive Tn5 transposase are used for the development of ATAC-seq library. The Tn5 transposase are found to biasly prefer the interaction to a certain pattern which can be observed in the fastqc result. Additionally, Tn5 intorduces a 9bp bias in which the Tn5 transposes cuts 4/5bp further then the 5' end of Read1 and Read2 so we need to furhter extend the reads for the region to collect the accurate interaction site of Tn5 with the accessible region. This means in order to have the read start site reflecting the centre of where Tn5 bound, the reads on the positive strand should be shifted 4 bp to the right and reads on the negative strands should be shifted 5 bp to the left as in Buenrostro et al. 2013. 
 
+> For anyone with interest, ATAC-seq introduces modification bias at the 5' of reads which if we would use this technique for DNA methylation detection then we need to remove 9bp from the 5' and activate dovetail.
+
 ### 8. Read Size
 
 Different from other technique, ATAC-seq does not perform additional step between enzyme treatment and PCR amplificaiton. Therefore, in this case, all sequence of all size will be included into the sequencing step. Due to the principle of ATAC-seq, it allows us to islate accessible regions that are as low as to 40bp which is lower the the recommended sequence length of above 75bp. Therefore, analysis will need to consider the case when a sequence read length is way lower then the actual read length we have. And also due to this case, we expect that many of the reads will contain adapter sequence within the sequences reads so trimming will therefor be vital. 
@@ -82,7 +80,8 @@ In the original study of ATAC-seq, they hypothsized that ATAC-seq isolate region
 - 100bp : Contains one nucleosome
 - 200bp : Contain two nucleosomes
 - 300bp: Contain three nucleosomes
-- >2000bp: ATAC-seq protocol does not have a size filtering step, however, due to the limitation of illumina sequencing, read with too many protein interaction will not be attached to the illumina platform and if they do, reads with a length of above 2000bp will not be sufficiently sequenced.
+
+>2000bp: ATAC-seq protocol does not have a size filtering step, however, due to the limitation of illumina sequencing, read with too many protein interaction will not be attached to the illumina platform and if they do, reads with a length of above 2000bp will not be sufficiently sequenced.
 
 ---
 
@@ -96,28 +95,37 @@ In the original study of ATAC-seq, they hypothsized that ATAC-seq isolate region
 
 Undoubtedly, assessing the quality of sequence data is the first step. Researchers commonly employ the tool **[fastqc](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/)**. ATAC-seq is known to introduce various biases, as mentioned earlier. Therefore, in the fastqc results, certain indicators of poor quality are generally expected. These include a bias in the 3' due to the sequence bias of the Tn5 transposase, a high duplication rate, and uneven sequence length distribution. The reasons for each are explained below:
 
-Regarding sequence bias, we have mentioned that the Tn5 transposase exhibits a preference for interacting with specific sequence combinations. As a result, these sequences are more commonly found at the cutting points of the Tn5, leading to a sequence bias at the start of sequence reads of ATAC-seq.
+- Checkpoint One: Regarding sequence bias, we have mentioned that the Tn5 transposase exhibits a preference for interacting with specific sequence combinations. As a result, these sequences are more commonly found at the cutting points of the Tn5, leading to a sequence bias at the start of sequence reads of ATAC-seq.
 
-Regarding the high duplication rate, since the Tn5 transposase exhibits bias, it tends to target similar regions across the sample cells. Consequently, it is highly likely to find two different identical regions targeted in the same sample, resulting in a high duplication rate. However, some researchers consider this a normal outcome of ATAC-seq bias, while others see it as a potential bias that could introduce errors due to potential PCR duplication mixtures.
+- Checkpoint Two: Regarding the high duplication rate, since the Tn5 transposase exhibits bias, it tends to target similar regions across the sample cells. Consequently, it is highly likely to find two different identical regions targeted in the same sample, resulting in a high duplication rate. However, some researchers consider this a normal outcome of ATAC-seq bias, while others see it as a potential bias that could introduce errors due to potential PCR duplication mixtures.
 
-The last bias is the sequence length distribution. ATAC-seq does not perform length selection, meaning sequences of all lengths are included in the PCR step. In these experiments, it is possible that regions below a certain length are extracted, leading to varying length sizes. Thus, this is also why trimming is a crucial step in ATAC-seq.
+- Checkpoint Three: The last bias is the sequence length distribution. ATAC-seq does not perform length selection, meaning sequences of all lengths are included in the PCR step. In these experiments, it is possible that regions below read length are extracted, leading to high number of adapter content after certain length. Thus, this is also why trimming is a crucial step in ATAC-seq.
 
 ## Trimming
 
-> Section update: Day Month Year
+> Section update: 07 May 2024
 
 For reads derived from short DNA fragments, the 3' ends may contain portions of the Illumina sequencing adapter. This adapter contamination may prevent the reads from aligning to the reference genome and adversely affect the downstream analysis. If you suspect that your reads may be contaminated with adapters (either from the FastQC report or from the size distribution of your sequencing libraries), you should run an adapter removal tool. In this case, ATAC-seq must be trimmed as it does not have any experimental filter.
 
 Few things to take into consideration for this section.
 
 * Need to remove low quality bases
+  - The phred quality can be vary, but need to be above 20 for precaution.
 * Need to remove reads that are too short as it may introduce too many false alignment
+  - Too short will lead to wrong alignment.
 * Need to remove reads with bad pair as ATAC-seq need to be paired.
+  - Single end alignment not recommended.
 
+There is many different packges has been developed to perform this procedure. Common packages include cutadapt and trimmotatic are quite widely applied. Here is an example code of trim-galore, a further application of cutadapt, and few detail explained:
 
-There is many different packges has been developed to perform this procedure. Common packages include cutadapt and trimmotatic are quite widely applied. The forward and reverse adapters are slightly different. We will also trim low quality bases at the ends of the reads (quality less than 20). We will only keep reads that are at least 20 bases long. We remove short reads (< 20bp) as they are not useful, they will either be thrown out by the mapping or may interfere with our results at the end.
-
-> Recommend the use of trim-galore that uses cutadapt.
+```sh
+# ATAC-seq library trimming
+trim_galore --paired \ # The library we are inputting are paired end sequencing
+            --quality 20 \ # Phred cutoff of 20
+            --length 20 \ # Read with length below 20 is insufficient as they will either be thrown out by the mapping or may interfere with our results at the end
+            --output_dir $trim_dir \ # The output file of all info
+            $R1 $R2 # Paired end so two fastq file for Read 1 and 2
+```
 
 ## Alignment
 
@@ -148,7 +156,7 @@ bowtie2 --very-sensitive \ # more chance to get the best match even if it takes 
 
 ## Post-alignment Filtering
 
-> Section update: Day Month Year
+> Section update: 11 April 2023
 
 ### Step 1 Mitochondrial removal
 
@@ -156,6 +164,7 @@ ATAC-Seq datasets have been reported to contain [mitchondrial contamination](#ex
 It can be a useful QC to assess the number of mitochondrial reads. However, it does not predict the quality of the rest of the data. It is just that sequencing reads have been wasted.
 
 > We remove mitochondrial reads using "chrM" as it chromosome name. However, this varies across databases and this is for Gencode. ENSEMBL database uses "MT" as mitochondrial read chromosome names.
+> Techniques such as Omni-ATAC-seq has removed MT contamination through wetlab protocols before sequencing.
 
 ```sh
 samtools view -@ $threads -h $input.bam | grep -v chrM | samtools sort -@ $threads -O bam -o $output.bam
@@ -194,7 +203,7 @@ samtools index ${prefix}.final.bam
 
 ## Accessible Peak calling
 
-> Section update: Day Month Year
+> Section update: 11 April 2023
 
 We have now finished the data preprocessing. Next, in order to find regions corresponding to potential open chromatin regions, we want to identify regions where reads have piled up (peaks) greater than the background read coverage. The tools which are currently used are Genrich and HMMRATAC. MACS2 was widely used but it incoporated HMMRATAC as their ATAC-seq algorithm in recent update. Both Genrich and HMMRATAC has not been updated in the past three years.
 
@@ -212,24 +221,33 @@ Genrich -t $input.bam \
 
 ### HMMRATAC
 
-Another package that was developed for ATAC-seq peak calling is HMMRATAC. It provides the user with gappedPeak statergy which reports the accessible peak region and the flanking region that is hypothesized to support the accessibility. This method uses a machine learning method that divided the whole genome into center of peak, supporting region and background (non peak). Personally I prefer this method.
-
+Another package that was developed for ATAC-seq peak calling is HMMRATAC. It provides the user with gappedPeak statergy which reports the accessible peak region and the flanking region that is hypothesized to support the accessibility. This method uses a machine learning method that divided the whole genome into center of peak, supporting region and background (non peak). Personally I prefer this method as it accomodates with the variation of ATAC-seq peak size. In other words, not all region will have a stable peak size variation, which most packages does not deal with, but HMMRATAC does. More details please refer to my method (Yi).
+ 
+ ```sh
+ # HMMRATAC peak calling
+HMMRATAC -b ${prefix}.final.bam \
+         -i ${prefix}.final.bam.bai \
+         -g $GenomeFasta -o ${prefix}.hmmratac \ 
+         -e $blacklist \  # Black list from ENCODE
+         -m $readlength,200,400,600 \ # the first size is the read length
+         --window 5000000 # remove RAM issue, if ram is problem then make this smaller
+ ```
 
 ## Differential accessibility
 
-> Section update: Day Month Year
+> Section update: 06 May 2024
 
 Currently there is no package specially designed for ATAC-seq. Commonly people use csaw and DiffBind for ChIP-seq as a replacement.
 
-### DiffBind
+csaw divides the whole genomic region in fragments of a certain size. It then compares the numebr of read in each fragment. Therefore, it does not need to run peak detection. It is based off edgeR algorithm.
 
-DIffBind is developed by using peaks. So DiffBind takes all the peaks that were determined in all replicates and use number of reads in each peak as an value for each new. Then DESeq2.
+DiffBind recurate the peak we called in the previous section into a more standarised peak that takes into the consideration of the peak consistency across replicates and the size of peak. By which, it allows much less computation power, more specific focused region analysis and more diversity as peaks does not always fall into one fragment defined by csaw. DiffBind allows the differential analysis to be performed using edgeR or DiffBind.
 
 ## Footprint analysis
 
-> Section update: Day Month Year
+> Section update: TBU
 
- but if you are interested in the footprint, this is important to take into account of 9bp shift
+
  
 ---
 
