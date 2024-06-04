@@ -36,7 +36,7 @@ With ATAC-Seq, to find accessible (open) chromatin regions, the genome is treate
 
 ### 1. Replicates
 
-Same as all techniques, ATAC-seq requires biological replicates to provide accurate results. This ensures that any signals observed are due to biological effects rather then a single replicates handling or processing. To begin (but more is better) with, two replicates per experimental group are sufficient.
+Same as all techniques, ATAC-seq requires biological replicates to provide accurate results. This ensures that any signals observed are due to biological effects rather then a single replicates handling or processing. To begin (but more is better) with, two replicates per experimental group are sufficient in the case of differential analysis as evidence suggested two replicates to recall 77% of events found in six replicates.
 
 ### 2. Controls
 
