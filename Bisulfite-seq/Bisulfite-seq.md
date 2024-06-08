@@ -19,17 +19,39 @@
 
 ## Background
 
-Methylation of DNA at cytosine nucleotides forms 5-methylcytosine  (5mC), which impacts various cellular processes involving gene expression and chromatin remodeling. These processes can influence health and development through methylation of promoter regions, cell differentiation, remodeling of chromatin for selective X-chromosome 
-inactivation, and suppression of transposable elements. 
+DNA methylation is a chemical modification where a methyl group is added to cytosine, one of the DNA bases. This usually happens at CpG sites, where a cytosine is followed by a guanine. Methylation can turn off gene expression by changing the structure of chromatin (the complex of DNA and proteins) or by blocking the binding of transcription factors that turn genes on. Studying methylation patterns helps researchers understand how genes are regulated, how cells differentiate, and how diseases like cancer develop.
 
-Next-generation sequencing technology has enabled genome-wide analysis of 5mC nucleotides at single-nucleotide resolution. In order to allow the decision of balance between cost and coverage to be decided, vairous level of method has been developed for bisufltie sequencing (discussed in next session). In general, bisufite seuqecing functions through the genomic DNA is treated with sodium bisulfite and then sequenced, providing single-base resolution of methylated cytosines in the genome. Upon bisulfite treatment, unmethylated cytosines are deaminated to uracils which, upon sequencing, are converted to thymidines. Simultaneously, methylated cytosines resist deamination and are read as cytosines. The location of the methylated cytosines can then be determined by comparing treated and untreated sequences. Bisulfite treatment of DNA converts unmethylated cytosines to thymidines, leading to reduced sequence complexity.
+Bisulfite sequencing (BS-seq) is a technique used to map DNA methylation. It involves treating DNA with bisulfite, which changes unmethylated cytosines to uracil, while leaving methylated cytosines unchanged. After sequencing, uracil is read as thymine, allowing researchers to distinguish between methylated and unmethylated cytosines.
 
+Next-generation sequencing allows for a detailed, genome-wide analysis of methylation at a single-nucleotide level. This makes it possible to choose between different methods based on cost and coverage needs. BS-seq provides single-base resolution of methylated cytosines by treating genomic DNA with sodium bisulfite and then sequencing it. After bisulfite treatment, unmethylated cytosines become uracils (read as thymines during sequencing), while methylated cytosines remain as cytosines. By comparing treated and untreated sequences, the locations of methylated cytosines can be identified. However, bisulfite treatment reduces sequence complexity because unmethylated cytosines are converted to thymines.
 
 ---
 
 ## Principle
 
-Bisulftei seuqencing contains a list of different methods for the differenti requirements. In general, the most common applied method includes whole genome bisulftie seuqneicng, reduced representiation bisulfite seuqneicng and 
+Bisulfite sequencing includes various methods tailored to different research needs. The most commonly applied methods are:
+
+1. **Whole Genome Bisulfite Sequencing (WGBS)**: This method sequences the entire genome, providing comprehensive methylation data at single-base resolution.
+2. **Reduced Representation Bisulfite Sequencing (RRBS)**: This method sequences a fraction of the genome, focusing on CpG-rich regions. It reduces cost and data complexity while still providing high-resolution methylation information.
+3. **Targeted Bisulfite Sequencing**: This method focuses on specific genomic regions of interest, offering a cost-effective approach for detailed methylation analysis in those regions.
+
+Key Steps in BS-seq
+
+1. **Bisulfite Treatment**
+   - DNA is treated with sodium bisulfite. This treatment converts unmethylated cytosines to uracil, while methylated cytosines remain unchanged. This conversion allows for the differentiation between methylated and unmethylated cytosines during sequencing.
+
+2. **PCR Amplification**
+   - The bisulfite-treated DNA is amplified using PCR. During this process, uracil residues are converted to thymine, preparing the DNA for sequencing. Care is taken to minimize PCR cycles to reduce amplification bias.
+
+3. **Sequencing**
+   - The amplified DNA is then sequenced using high-throughput sequencing technologies. Paired-end sequencing is often preferred for better alignment and comprehensive coverage.
+
+4. **Data Analysis**
+   - The sequencing reads are aligned to a bisulfite-converted reference genome. Bioinformatics tools such as Bismark or BSmap are used to map the reads and extract methylation information.
+   - The methylation status of each cytosine is determined by comparing the treated and untreated sequences. Unmethylated cytosines, converted to thymine during the bisulfite treatment, are distinguished from methylated cytosines, which remain as cytosine.
+   - Additional analysis can include identifying differentially methylated regions (DMRs) and understanding the biological significance of methylation patterns in gene regulation and disease.
+
+By following these steps, researchers can generate detailed methylation maps, providing insights into epigenetic regulation and its implications in health and disease.
 
 ---
 
